@@ -56,15 +56,15 @@
 
         button {
             padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            border: 1px solid #ccc; /* Default border */
+            background-color: white; /* Default background */
+            color: black; /* Default text color */
+            border-radius: 5px; /* Rounded edges */
             cursor: pointer;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #f1f1f1; /* Lighter background on hover */
         }
 
         @media (max-width: 768px) {
@@ -134,7 +134,6 @@
             <p>If you’ve modified and saved the JSON, click the <span class="highlight">"Regenerate QR Code"</span> button to generate a new QR code based on the updated JSON data.</p>
         </div>
 
-        
         <div class="button">
             <button onclick="window.location.href = 'index.html';">Go Back to QR Code Generator</button>
         </div>
@@ -142,11 +141,11 @@
 
 </body>
 
-
 <!-- Disclaimer with version link -->
 <footer style="margin-top: 40px; padding: 20px; background-color: #f9f9f9; text-align: center; border-top: 1px solid #ddd;">
     <p>Is Text/QR code processed & stored on remote server?<br>
-    No, all the processing is done on your browser engine, and is limited to this current session. <br>No information is retained or stored. This tool is not affiliated with Omnissa.com </p>
+    No, all the processing is done on your browser engine, and is limited to this current session. No information is retained or stored.<br>
+    This tool is not affiliated with Omnissa.com </p>
     <p>Version: W-2024-01.08</p>
     <p><a href="version-history.html" target="_blank">View Version History</a><br><br>
         ... choose  kindness  ♥</p>
