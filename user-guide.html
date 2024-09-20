@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use the Workspace ONE UEM QR Code Helper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+
+        p, ul {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        .step {
+            margin-bottom: 30px;
+        }
+
+        .highlight {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Workspace ONE UEM QR Code Helper - User Guide</h1>
+
+    <div class="container">
+        <h2>Step-by-Step Guide</h2>
+
+        <div class="step">
+            <h3>1. Enable WiFi Configuration (Optional)</h3>
+            <p>If you want to include WiFi details in the QR code, <span class="highlight">check the "Enable WiFi Configuration" checkbox</span>. Then, provide the following details:</p>
+            <ul>
+                <li><strong>WiFi SSID:</strong> Enter the WiFi network name (SSID).</li>
+                <li><strong>WiFi Password:</strong> Enter the WiFi password.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>2. Fill in Device Information</h3>
+            <p>Fill in the following fields to provide the necessary information for device provisioning:</p>
+            <ul>
+                <li><strong>Device Server:</strong> Enter the Workspace ONE UEM device server URL.</li>
+                <li><strong>Group ID:</strong> Enter your organization's Group ID.</li>
+                <li><strong>Username:</strong> Enter the username for device enrollment.</li>
+                <li><strong>Password:</strong> Enter the password for the username.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>3. Configure Additional Settings</h3>
+            <p>Configure extra settings as needed:</p>
+            <ul>
+                <li><strong>useUEMAuthentication:</strong> Check this box to enable UEM authentication in the QR code. The value will be added as <code>"true"</code> or <code>"false"</code> in the JSON.</li>
+                <li><strong>Enable System Apps:</strong> Keep this box checked to leave all system apps enabled during provisioning.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>4. Generate QR Code</h3>
+            <p>Click the <span class="highlight">"Generate QR Code"</span> button to generate a QR code based on the details you've entered. The QR code will appear on the screen, along with an editable JSON representation of the data.</p>
+        </div>
+
+        <div class="step">
+            <h3>5. View and Edit JSON</h3>
+            <p>The tool displays the JSON used to generate the QR code. If needed, <span class="highlight">edit the JSON</span> directly in the text box to customize the QR code.</p>
+        </div>
+
+        <div class="step">
+            <h3>6. Save JSON</h3>
+            <p>After editing the JSON, click the <span class="highlight">"Save JSON"</span> button to update the JSON. This will not regenerate the QR code until you click "Regenerate QR Code".</p>
+        </div>
+
+        <div class="step">
+            <h3>7. Regenerate QR Code</h3>
+            <p>If you’ve modified and saved the JSON, click the <span class="highlight">"Regenerate QR Code"</span> button to generate a new QR code based on the updated JSON data.</p>
+        </div>
+
+        <h2>Tool Highlights</h2>
+
+        <ul>
+            <li><strong>Error Handling:</strong> The tool checks for missing required fields and alerts you if there’s an issue. Invalid JSON formatting is also detected and highlighted.</li>
+            <li><strong>Editable JSON:</strong> You can customize the provisioning parameters by editing the JSON, allowing full control over the QR code content.</li>
+            <li><strong>WiFi Configuration:</strong> Optional WiFi configuration can be included, allowing devices to automatically connect to a specific network during provisioning.</li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <p>This tool can be used to quickly generate a QR code for Android device provisioning via Workspace ONE UEM, making it easier for IT administrators to deploy and enroll devices. The generated QR code can be scanned by Android devices during setup, allowing them to provision based on the settings embedded in the QR code.</p>
+
+        <div class="button">
+            <button onclick="window.location.href = 'index.html';">Go Back to QR Code Generator</button>
+        </div>
+    </div>
+
+</body>
+
+
+<!-- Disclaimer with version link -->
+<footer style="margin-top: 40px; padding: 20px; background-color: #f9f9f9; text-align: center; border-top: 1px solid #ddd;">
+    <p><strong>Disclaimer:</strong></p>
+    <p>Is Text/QR code processed & stored on remote server?<br>
+    No, all the processing is done on your browser, so nothing is saved on our servers.<br>
+    This tool is not affiliated with Omnissa.com.</p>
+    <p>Version: W-2024-01.06</p>
+    <p><a href="version-history.html" target="_blank">View Version History</a></p>
+</footer>
+
+</html>

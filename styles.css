@@ -1,0 +1,73 @@
+/* General form container styling */
+.form-container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 600px;
+}
+
+/* Style for each form group */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Align input fields in a grid layout (2 columns) */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Form item styling for better alignment */
+.form-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-item label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-item input {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button section styling */
+.buttons-section {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Primary and secondary button styles */
+.primary-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.secondary-btn {
+    background-color: #008CBA; /* Blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.primary-btn:hover, .secondary-btn:hover {
+    opacity: 0.8;
+}
+
+/* QR Code container and JSON styling */
+#qr-json-container {
+    margin-top: 20px;
+}
