@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const qrCodeContainer = document.getElementById('qrcode');
     const jsonContentArea = document.getElementById('json-content');
     const errorMessage = document.getElementById('error-message');
+    const instructionText = document.getElementById('instruction-text');  // New instructional text element
     
     let defaultJson = {
         "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.airwatch.androidagent/com.airwatch.agent.DeviceAdministratorReceiver",
@@ -29,6 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     let updatedJsonString = "";  // Variable to hold the updated JSON string
+
+    // Hide Save, Regenerate buttons, and instruction text initially
+    saveBtn.style.display = 'none';
+    regenerateBtn.style.display = 'none';
+    instructionText.style.display = 'none';
 
     // Display or hide the WiFi section based on checkbox
     enableWifiCheckbox.addEventListener('change', function () {
@@ -107,9 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Generate the QR Code using the updated JSON string
         generateQRCode(updatedJsonString);
 
-        // Show the regenerate button after first generation
+        // Show the save, regenerate buttons, and instructional text after first generation
+        saveBtn.style.display = 'inline-block';  // Show the Save button
         generateBtn.style.display = 'none';
         regenerateBtn.style.display = 'inline-block';
+        instructionText.style.display = 'block';  // Show the instructional text
     });
 
     // Event listener for Save button

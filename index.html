@@ -15,9 +15,9 @@
           display: flex;
           gap: 10px; /* Adjust this value for more or less padding */
         }
-      </style>
-      
-      <div class="button-container">
+    </style>
+
+    <div class="button-container">
         <button onclick="window.location.href='https://docs.vmware.com/en/VMware-Workspace-ONE-UEM/2212/Android_Platform/GUID-AndroidEnrollmentAdditionalEnrollmentFlags.html';">
           Omnissa Docs
         </button>
@@ -25,10 +25,7 @@
         <button onclick="window.location.href='user-guide.html';">
           User Guide
         </button>
-      </div>
-      
-    
-    
+    </div>
 
     <div class="form-container">
         <!-- WiFi Configuration Section -->
@@ -75,11 +72,20 @@
         <div id="error-message" style="color: red; display: none;"></div>
 
         <!-- Buttons Section -->
-        <div class="buttons-section">
-            <button id="generate-btn" class="primary-btn">Generate QR Code</button>
-            <button id="save-btn" class="secondary-btn">Save JSON</button>
-            <button id="regenerate-btn" class="secondary-btn" style="display: none;">Regenerate QR Code</button>
-        </div>
+        <!-- Buttons Section -->
+<!-- Buttons Section -->
+<div class="buttons-section">
+    <button id="generate-btn">Generate QR Code</button>
+    <button id="save-btn" class="secondary-btn" style="display: none;">Save JSON</button>
+    <button id="regenerate-btn" class="secondary-btn" style="display: none;">Regenerate QR Code</button>
+
+    <!-- Instructional text hidden initially -->
+    <p id="instruction-text" style="display: none; margin-top: 10px; font-style: italic;">
+        Note: If modifying QR code, select Save, then select Re-Generate.
+    </p>
+</div>
+
+
     </div>
 
     <!-- Container for QR code and JSON display -->
@@ -97,13 +103,10 @@
 <footer style="margin-top: 40px; padding: 20px; background-color: #f9f9f9; text-align: center; border-top: 1px solid #ddd;">
     <p><strong>Disclaimer:</strong></p>
     <p>Is Text/QR code processed & stored on remote server?<br>
-    No, all the processing is done on your browser, so nothing is saved on our servers.<br>
+    No, all the processing is done on your browser, and is limited to this current session. We do not store this information.<br>
     This tool is not affiliated with Omnissa.com.</p>
     <p>Version: W-2024-01.06</p>
     <p><a href="version-history.html" target="_blank">View Version History</a></p>
 </footer>
 
-
 </html>
-
-
