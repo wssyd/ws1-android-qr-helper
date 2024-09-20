@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Cache DOM elements
+   
     const enableWifiCheckbox = document.getElementById('enable-wifi-checkbox');
     const useUEMAuthCheckbox = document.getElementById('use-ue-auth-checkbox');
     const enableVIDMCookiesCheckbox = document.getElementById('enable-vidm-cookies-checkbox'); // Updated ID
@@ -14,10 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const errorMessage = document.getElementById('error-message');
     const instructionText = document.getElementById('instruction-text');
 
+        //start with a starting JSON Object, and variable for placeholder updated JSON Object
     let defaultJson = getDefaultJson();
     let updatedJsonString = '';
 
-    // Helper function: Get the default JSON structure
+    // Get the default JSON structure
     function getDefaultJson() {
         return {
             "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.airwatch.androidagent/com.airwatch.agent.DeviceAdministratorReceiver",
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 "un": "",
                 "pw": "",
                 "useUEMAuthentication": "false",
-                "enable3rdPartyCookiesInVIDM": "false" // Updated KVP
+                "enable3rdPartyCookiesInVIDM": "false" 
             }
         };
     }
@@ -44,23 +45,23 @@ document.addEventListener('DOMContentLoaded', function () {
         wifiSection.style.display = enableWifiCheckbox.checked ? 'block' : 'none'; // Toggle visibility
     });
 
-    // Helper function: Show or hide elements
+    // Function to Show or hide elements
     function toggleElementVisibility(element, show) {
         element.style.display = show ? 'inline-block' : 'none';
     }
 
-    // Helper function: Show error message
+    // Function to  Show error message
     function showError(message) {
         errorMessage.textContent = message;
         errorMessage.style.display = 'block';
     }
 
-    // Helper function: Hide error message
+    // Function to  Hide error message
     function hideError() {
         errorMessage.style.display = 'none';
     }
 
-    // Initialize the UI
+    // Function to  Initialize the UI
     function initializeUI() {
         wifiSection.style.display = 'none'; // Ensure Wi-Fi section is hidden on load
         toggleElementVisibility(saveBtn, false);
@@ -70,7 +71,9 @@ document.addEventListener('DOMContentLoaded', function () {
         hideError();
     }
 
-    // Method to generate QR Code and display the JSON in an editable text box
+    // Function to  generate QR Code and display the JSON in an editable text box
+    //Modified to showcase editable textbox above the QR code for better UX
+    //Modified in v01.09
     function generateQRCode(qrString) {
         qrCodeContainer.innerHTML = "";  // Clear previous QR code
 
@@ -90,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Remove Wi-Fi keys from the JSON if Wi-Fi checkbox is not checked
+    // Device does not recognize what to do if these lines are not handled properly in DPC Extras
     function removeWifiKeysFromJson(json) {
         if (!enableWifiCheckbox.checked) {
             delete json["android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE"];
@@ -98,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Disable checkboxes after QR code generation
+    // Disable checkboxes after QR code generation to preserve UX
     function disableCheckboxes() {
         enableWifiCheckbox.disabled = true;
         useUEMAuthCheckbox.disabled = true;
