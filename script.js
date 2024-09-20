@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Cache DOM elements
     const enableWifiCheckbox = document.getElementById('enable-wifi-checkbox');
     const useUEMAuthCheckbox = document.getElementById('use-ue-auth-checkbox');
     const enableSystemAppsCheckbox = document.getElementById('enable-system-apps-checkbox');
@@ -12,62 +11,44 @@ document.addEventListener('DOMContentLoaded', function () {
     const jsonContentArea = document.getElementById('json-content');
     const errorMessage = document.getElementById('error-message');
     const instructionText = document.getElementById('instruction-text');
+    
+    let defaultJson = {
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.airwatch.androidagent/com.airwatch.agent.DeviceAdministratorReceiver",
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "6kyqxDOjgS30jvQuzh4uvHPk-0bmAD-1QU7vtW7i_o8=\n",
+        "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://play.google.com/managed/downloadManagingApp?identifier=hub",
+        "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": false,
+        "android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE": "none",
+        "android.app.extra.PROVISIONING_WIFI_SSID": "",
+        "android.app.extra.PROVISIONING_WIFI_PASSWORD": "",
+        "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true,
+        "android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE": {
+            "serverurl": "",
+            "gid": "",
+            "un": "",
+            "pw": "",
+            "useUEMAuthentication": "false"
+        }
+    };
 
-    let defaultJson = getDefaultJson();
-    let updatedJsonString = '';
+    let updatedJsonString = "";  // Variable to hold the updated JSON string
 
-    // Helper function: Get the default JSON structure
-    function getDefaultJson() {
-        return {
-            "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.airwatch.androidagent/com.airwatch.agent.DeviceAdministratorReceiver",
-            "android.app.extra.PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM": "6kyqxDOjgS30jvQuzh4uvHPk-0bmAD-1QU7vtW7i_o8=\n",
-            "android.app.extra.PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION": "https://play.google.com/managed/downloadManagingApp?identifier=hub",
-            "android.app.extra.PROVISIONING_SKIP_ENCRYPTION": false,
-            "android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE": "",
-            "android.app.extra.PROVISIONING_WIFI_SSID": "",
-            "android.app.extra.PROVISIONING_WIFI_PASSWORD": "",
-            "android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED": true,
-            "android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE": {
-                "serverurl": "",
-                "gid": "",
-                "un": "",
-                "pw": "",
-                "useUEMAuthentication": "false"
-            }
-        };
-    }
+    // Hide Save, Regenerate, Download PDF buttons, and instruction text initially
+    saveBtn.style.display = 'none';
+    regenerateBtn.style.display = 'none';
+    downloadPdfBtn.style.display = 'none';
+    instructionText.style.display = 'none';
 
-    // Helper function: Show or hide elements
-    function toggleElementVisibility(element, show) {
-        element.style.display = show ? 'inline-block' : 'none';
-    }
-
-    // Helper function: Show error message
-    function showError(message) {
-        errorMessage.textContent = message;
-        errorMessage.style.display = 'block';
-    }
-
-    // Helper function: Hide error message
-    function hideError() {
-        errorMessage.style.display = 'none';
-    }
-
-    // Initialize the UI
-    function initializeUI() {
-        toggleElementVisibility(saveBtn, false);
-        toggleElementVisibility(regenerateBtn, false);
-        toggleElementVisibility(downloadPdfBtn, false);
-        toggleElementVisibility(instructionText, false);
-        hideError();
-    }
+    // Display or hide the WiFi section based on checkbox
+    enableWifiCheckbox.addEventListener('change', function () {
+        wifiSection.style.display = enableWifiCheckbox.checked ? 'block' : 'none';
+    });
 
     // Method to generate QR Code and display the JSON in an editable text box
     function generateQRCode(qrString) {
         const utf8String = new TextEncoder().encode(qrString);
         const encodedString = new TextDecoder('utf-8').decode(utf8String);
 
-        qrCodeContainer.innerHTML = "";  // Clear previous QR code
+        qrCodeContainer.innerHTML = "";
 
         try {
             new QRCode(qrCodeContainer, {
@@ -77,20 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 correctLevel: QRCode.CorrectLevel.H
             });
         } catch (err) {
-            showError("Error generating QR code: " + err.message);
+            errorMessage.textContent = "Error generating QR code: " + err.message;
+            errorMessage.style.display = 'block';
         }
 
         jsonContentArea.value = qrString;
         document.getElementById('qr-json-container').style.display = 'block';
-    }
-
-    // Remove Wi-Fi keys from the JSON if Wi-Fi checkbox is not checked
-    function removeWifiKeysFromJson(json) {
-        if (!enableWifiCheckbox.checked) {
-            delete json["android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE"];
-            delete json["android.app.extra.PROVISIONING_WIFI_SSID"];
-            delete json["android.app.extra.PROVISIONING_WIFI_PASSWORD"];
-        }
     }
 
     // Event listener for Generate QR Code button
@@ -101,21 +74,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('password').value.trim();
 
         if (!serverName || !groupId) {
-            showError('Please fill in all required fields.');
+            errorMessage.textContent = 'Please fill in all required fields.';
+            errorMessage.style.display = 'block';
             return;
         }
 
-        // Get Wi-Fi values if enabled
+        // Get WiFi values if enabled
         if (enableWifiCheckbox.checked) {
             const wifiSSID = document.getElementById('wifi-ssid').value.trim();
             const wifiPassword = document.getElementById('wifi-password').value.trim();
             if (!wifiSSID || !wifiPassword) {
-                showError('Please fill in WiFi SSID and Password.');
+                errorMessage.textContent = 'Please fill in WiFi SSID and Password.';
+                errorMessage.style.display = 'block';
                 return;
             }
             defaultJson["android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE"] = "WPA";
             defaultJson["android.app.extra.PROVISIONING_WIFI_SSID"] = wifiSSID;
             defaultJson["android.app.extra.PROVISIONING_WIFI_PASSWORD"] = wifiPassword;
+        } else {
+            defaultJson["android.app.extra.PROVISIONING_WIFI_SECURITY_TYPE"] = "none";
+            defaultJson["android.app.extra.PROVISIONING_WIFI_SSID"] = "";
+            defaultJson["android.app.extra.PROVISIONING_WIFI_PASSWORD"] = "";
         }
 
         // Update JSON values with user input
@@ -126,32 +105,30 @@ document.addEventListener('DOMContentLoaded', function () {
         defaultJson["android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE"].useUEMAuthentication = useUEMAuthCheckbox.checked ? "true" : "false";
         defaultJson["android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED"] = enableSystemAppsCheckbox.checked;
 
-        // Remove Wi-Fi keys if Wi-Fi is not enabled
-        removeWifiKeysFromJson(defaultJson);
-
         // Convert the updated JSON object to a string
         updatedJsonString = JSON.stringify(defaultJson);
 
         // Generate the QR Code using the updated JSON string
         generateQRCode(updatedJsonString);
 
-        // Show the save, regenerate, and download buttons after first generation
-        toggleElementVisibility(saveBtn, true);
-        toggleElementVisibility(regenerateBtn, true);
-        toggleElementVisibility(downloadPdfBtn, true);
-        toggleElementVisibility(instructionText, true);
-        generateBtn.style.display = 'none';  // Hide generate button after first use
+        // Show the save, regenerate, download buttons, and instructional text after first generation
+        saveBtn.style.display = 'inline-block';
+        regenerateBtn.style.display = 'inline-block';
+        downloadPdfBtn.style.display = 'inline-block';
+        instructionText.style.display = 'block';
+        generateBtn.style.display = 'none';
     });
 
     // Event listener for Save button
     saveBtn.addEventListener('click', function () {
         try {
             updatedJsonString = jsonContentArea.value;
-            const parsedJson = JSON.parse(updatedJsonString);  // Parse to ensure valid JSON
+            const parsedJson = JSON.parse(updatedJsonString);
             defaultJson = { ...parsedJson };
-            hideError();
+            errorMessage.style.display = 'none';
         } catch (error) {
-            showError('Invalid JSON format. Please correct the JSON.');
+            errorMessage.textContent = 'Invalid JSON format. Please correct the JSON.';
+            errorMessage.style.display = 'block';
         }
     });
 
@@ -170,10 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
             pdf.addImage(qrImageData, 'PNG', 15, 40, 180, 180);
             pdf.save('qr-code.pdf');
         } else {
-            showError('QR code not available for download.');
+            errorMessage.textContent = 'QR code not available for download.';
+            errorMessage.style.display = 'block';
         }
     });
-
-    // Initialize the UI on page load
-    initializeUI();
 });
