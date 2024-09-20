@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Cache DOM elements
     const enableWifiCheckbox = document.getElementById('enable-wifi-checkbox');
     const useUEMAuthCheckbox = document.getElementById('use-ue-auth-checkbox');
+    const enableVIDMCookiesCheckbox = document.getElementById('enable-vidm-cookies-checkbox'); // Updated ID
     const enableSystemAppsCheckbox = document.getElementById('enable-system-apps-checkbox');
     const wifiSection = document.getElementById('wifi-section');
     const generateBtn = document.getElementById('generate-btn');
@@ -32,18 +33,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 "gid": "",
                 "un": "",
                 "pw": "",
-                "useUEMAuthentication": "false"
+                "useUEMAuthentication": "false",
+                "enable3rdPartyCookiesInVIDM": "false" // Updated KVP
             }
         };
     }
 
     // Function to toggle WiFi section visibility based on checkbox state
     enableWifiCheckbox.addEventListener('change', function () {
-        if (enableWifiCheckbox.checked) {
-            wifiSection.style.display = 'block'; // Show WiFi SSID and Password fields
-        } else {
-            wifiSection.style.display = 'none'; // Hide WiFi SSID and Password fields
-        }
+        wifiSection.style.display = enableWifiCheckbox.checked ? 'block' : 'none'; // Toggle visibility
     });
 
     // Helper function: Show or hide elements
@@ -74,14 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Method to generate QR Code and display the JSON in an editable text box
     function generateQRCode(qrString) {
-        const utf8String = new TextEncoder().encode(qrString);
-        const encodedString = new TextDecoder('utf-8').decode(utf8String);
-
         qrCodeContainer.innerHTML = "";  // Clear previous QR code
 
         try {
             new QRCode(qrCodeContainer, {
-                text: encodedString,
+                text: qrString,
                 width: 450,
                 height: 450,
                 correctLevel: QRCode.CorrectLevel.H
@@ -101,6 +96,14 @@ document.addEventListener('DOMContentLoaded', function () {
             delete json["android.app.extra.PROVISIONING_WIFI_SSID"];
             delete json["android.app.extra.PROVISIONING_WIFI_PASSWORD"];
         }
+    }
+
+    // Disable checkboxes after QR code generation
+    function disableCheckboxes() {
+        enableWifiCheckbox.disabled = true;
+        useUEMAuthCheckbox.disabled = true;
+        enableSystemAppsCheckbox.disabled = true;
+        enableVIDMCookiesCheckbox.disabled = true; // Updated checkbox
     }
 
     // Event listener for Generate QR Code button
@@ -135,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
         defaultJson["android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE"].pw = password;
         defaultJson["android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE"].useUEMAuthentication = useUEMAuthCheckbox.checked ? "true" : "false";
         defaultJson["android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED"] = enableSystemAppsCheckbox.checked;
+        defaultJson["android.app.extra.PROVISIONING_ADMIN_EXTRAS_BUNDLE"].enable3rdPartyCookiesInVIDM = enableVIDMCookiesCheckbox.checked ? "true" : "false"; // Updated logic
 
         // Remove Wi-Fi keys if Wi-Fi is not enabled
         removeWifiKeysFromJson(defaultJson);
@@ -151,6 +155,9 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleElementVisibility(downloadPdfBtn, true);
         toggleElementVisibility(instructionText, true);
         generateBtn.style.display = 'none';  // Hide generate button after first use
+
+        // Disable the checkboxes after generating the QR code
+        disableCheckboxes();
     });
 
     // Event listener for Save button
