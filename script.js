@@ -6,10 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const generateBtn = document.getElementById('generate-btn');
     const saveBtn = document.getElementById('save-btn');
     const regenerateBtn = document.getElementById('regenerate-btn');
+    const downloadPdfBtn = document.getElementById('download-pdf-btn');
     const qrCodeContainer = document.getElementById('qrcode');
     const jsonContentArea = document.getElementById('json-content');
     const errorMessage = document.getElementById('error-message');
-    const instructionText = document.getElementById('instruction-text');  // New instructional text element
+    const instructionText = document.getElementById('instruction-text');
     
     let defaultJson = {
         "android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME": "com.airwatch.androidagent/com.airwatch.agent.DeviceAdministratorReceiver",
@@ -31,9 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let updatedJsonString = "";  // Variable to hold the updated JSON string
 
-    // Hide Save, Regenerate buttons, and instruction text initially
+    // Hide Save, Regenerate, Download PDF buttons, and instruction text initially
     saveBtn.style.display = 'none';
     regenerateBtn.style.display = 'none';
+    downloadPdfBtn.style.display = 'none';
     instructionText.style.display = 'none';
 
     // Display or hide the WiFi section based on checkbox
@@ -43,14 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Method to generate QR Code and display the JSON in an editable text box
     function generateQRCode(qrString) {
-        // Encode the string in UTF-8
         const utf8String = new TextEncoder().encode(qrString);
         const encodedString = new TextDecoder('utf-8').decode(utf8String);
 
-        // Clear previous QR code (if any)
         qrCodeContainer.innerHTML = "";
 
-        // Generate and display the QR code
         try {
             new QRCode(qrCodeContainer, {
                 text: encodedString,
@@ -63,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
             errorMessage.style.display = 'block';
         }
 
-        // Display the editable JSON string in the text area
         jsonContentArea.value = qrString;
         document.getElementById('qr-json-container').style.display = 'block';
     }
@@ -113,18 +111,19 @@ document.addEventListener('DOMContentLoaded', function () {
         // Generate the QR Code using the updated JSON string
         generateQRCode(updatedJsonString);
 
-        // Show the save, regenerate buttons, and instructional text after first generation
-        saveBtn.style.display = 'inline-block';  // Show the Save button
-        generateBtn.style.display = 'none';
+        // Show the save, regenerate, download buttons, and instructional text after first generation
+        saveBtn.style.display = 'inline-block';
         regenerateBtn.style.display = 'inline-block';
-        instructionText.style.display = 'block';  // Show the instructional text
+        downloadPdfBtn.style.display = 'inline-block';
+        instructionText.style.display = 'block';
+        generateBtn.style.display = 'none';
     });
 
     // Event listener for Save button
     saveBtn.addEventListener('click', function () {
         try {
             updatedJsonString = jsonContentArea.value;
-            const parsedJson = JSON.parse(updatedJsonString);  // Parse to ensure valid JSON
+            const parsedJson = JSON.parse(updatedJsonString);
             defaultJson = { ...parsedJson };
             errorMessage.style.display = 'none';
         } catch (error) {
@@ -136,5 +135,20 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for Regenerate QR Code button
     regenerateBtn.addEventListener('click', function () {
         generateQRCode(updatedJsonString);
+    });
+
+    // Event listener for Download PDF button
+    downloadPdfBtn.addEventListener('click', function () {
+        const qrCanvas = qrCodeContainer.querySelector('canvas');
+        if (qrCanvas) {
+            const qrImageData = qrCanvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            pdf.addImage(qrImageData, 'PNG', 15, 40, 180, 180);
+            pdf.save('qr-code.pdf');
+        } else {
+            errorMessage.textContent = 'QR code not available for download.';
+            errorMessage.style.display = 'block';
+        }
     });
 });

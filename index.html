@@ -71,19 +71,22 @@
 
         <div id="error-message" style="color: red; display: none;"></div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+     
         <!-- Buttons Section -->
-        <!-- Buttons Section -->
-<!-- Buttons Section -->
 <div class="buttons-section">
     <button id="generate-btn">Generate QR Code</button>
     <button id="save-btn" class="secondary-btn" style="display: none;">Save JSON</button>
     <button id="regenerate-btn" class="secondary-btn" style="display: none;">Regenerate QR Code</button>
+    <button id="download-pdf-btn" class="secondary-btn" style="display: none;">Download QR Code as PDF</button>
 
     <!-- Instructional text hidden initially -->
     <p id="instruction-text" style="display: none; margin-top: 10px; font-style: italic;">
         Note: If modifying QR code, select Save, then select Re-Generate.
     </p>
 </div>
+
 
 
     </div>
